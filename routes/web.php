@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisPerawatanController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PenggunaController;
+use App\Http\Controllers\PiutangController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,6 +26,7 @@ Route::get('/', function () {
 Route::get('/dashboard', [DashboardController::class, '__invoke'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::resource('/piutang', PiutangController::class);
     Route::resource('/jenis-perawatan', JenisPerawatanController::class);
     Route::resource('/pasien', PasienController::class);
     Route::resource('/pengguna', PenggunaController::class);

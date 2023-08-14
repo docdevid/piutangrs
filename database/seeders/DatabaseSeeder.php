@@ -13,7 +13,8 @@ class DatabaseSeeder extends Seeder
             RolesAndPermissionSeeder::class,
             UserSeeder::class,
             PasienSeeder::class,
-            JenisPerawatanSeeder::class
+            JenisPerawatanSeeder::class,
+            PiutangSeeder::class
         ]);
     }
 }
