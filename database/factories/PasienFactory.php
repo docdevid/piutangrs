@@ -21,7 +21,6 @@ class PasienFactory extends Factory
             'no_rm' => fake()->numberBetween(100000, 999999),
             'alamat' => fake()->address(),
             'asli_daerah' => fake()->randomElement(['1', '0']),
-            'created_by' => User::
         ];
     }
 }

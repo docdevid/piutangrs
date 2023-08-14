@@ -1,8 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\DosenController;
-use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\JenisPerawatanController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\ProfileController;
@@ -26,6 +25,7 @@ Route::get('/', function () {
 Route::get('/dashboard', [DashboardController::class, '__invoke'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::resource('/jenis-perawatan', JenisPerawatanController::class);
     Route::resource('/pasien', PasienController::class);
     Route::resource('/pengguna', PenggunaController::class);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
