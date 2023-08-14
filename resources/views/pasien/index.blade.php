@@ -34,7 +34,7 @@
                 <div class="card-body border-bottom py-3">
                     <div class="d-flex">
                         <div class="text-secondary">
-                            <a href="{{route('pengguna.create')}}"
+                            <a href="{{route('pasien.create')}}"
                                 class="btn btn-primary">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-plus p-0 m-0"
@@ -71,7 +71,7 @@
                         <thead>
                             <tr>
                                 <th style="width: 60px;">No.</th>
-                                <th class="col-3">Nama Pasien</th>
+                                <th class="col-2">Nama Pasien</th>
                                 <th class="col-1">No Rekam Medis</th>
                                 <th class="col-2 text-center">Asli Daerah</th>
                                 <th>Terdaftar</th>
@@ -89,7 +89,7 @@
                                 <td class="text-secondary">{{++$no}}</td>
                                 <td class="text-secondary py-3">{{$pasien->nama}}</td>
                                 <td>
-                                    <span class="bg-green-lt p-1 fst-italic">
+                                    <span class="bg-dark-lt p-1 small rounded">
                                         {{$pasien->no_rm}}
                                     </span>
                                 </td>
@@ -106,11 +106,11 @@
                                         <div
                                             class="dropdown-menu">
                                             <a class="dropdown-item"
-                                                href="{{route('pengguna.show',$pasien->id)}}">
+                                                href="{{route('pasien.show',$pasien->id)}}">
                                                 Detail
                                             </a>
                                             <a class="dropdown-item"
-                                                href="{{route('pengguna.edit',$pasien->id)}}">
+                                                href="{{route('pasien.edit',$pasien->id)}}">
                                                 Edit
                                             </a>
                                             <a class="dropdown-item"
@@ -121,7 +121,7 @@
                                             <form class="d-none"
                                                 id="delete{{$pasien->id}}"
                                                 method="POST"
-                                                action="{{route('pengguna.destroy',$pasien->id)}}">
+                                                action="{{route('pasien.destroy',$pasien->id)}}">
                                                 @method('delete')
                                                 @csrf
                                             </form>

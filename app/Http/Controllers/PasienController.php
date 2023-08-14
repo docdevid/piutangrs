@@ -32,90 +32,79 @@ class PasienController extends Controller
      */
     public function create()
     {
-        $pengguna = new User();
+        $pasien = new User();
         $title = $this->title;
-        $roles = Role::all()->filter(function ($e) {
-            if ($e->name != 'Super Admin') {
-                return $e;
-            }
-        });
-        return view('pasien.create', compact('title', 'pengguna', 'roles'));
+
+        return view('pasien.create', compact('title', 'pasien'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, User $user)
+    public function store(Request $request, Pasien $user)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required',
-            'role' => 'required',
+            'nama' => 'required',
+            'no_rm' => 'required',
+            'alamat' => 'required',
         ]);
 
-        if ($userCreated = $user->create($request->all())) {
-
-            $userCreated->assignRole($request->role);
-
-            if ($request->has('image') && $request->file('image')->isValid()) {
-                $userCreated->addMediaFromRequest('image')->toMediaCollection('pengguna');
-            }
-
-            return to_route('pengguna.index')->with('status', 'create-success');
+        if ($request->has('asli_daerah')) {
+            $request->request->add(['asli_daerah' => '1']);
+        } else {
+            $request->request->add(['asli_daerah' => '0']);
         }
+
+        $user->create($request->all());
+
+        return to_route('pasien.index')->with('status', 'create-success');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(User $pengguna)
+    public function show(Pasien $pasien)
     {
         $title = $this->title;
-        return view('pasien.show', compact('pengguna', 'title'));
+        return view('pasien.show', compact('pasien', 'title'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $pengguna)
+    public function edit(Pasien $pasien)
     {
         $title = $this->title;
-        $roles = Role::all()->filter(function ($e) {
-            if ($e->name != 'Super Admin') {
-                return $e;
-            }
-        });
-        return view('pasien.edit', compact('title', 'pengguna', 'roles'));
+        return view('pasien.edit', compact('title', 'pasien'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $pengguna)
+    public function update(Request $request, Pasien $pasien)
     {
         $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $pengguna->id,            'password' => 'required',
+            'nama' => 'required',
+            'no_rm' => 'required',
+            'alamat' => 'required',
         ]);
 
-        $pengguna->update($request->all());
-
-        if ($request->has('image') && $request->file('image')->isValid()) {
-
-            $pengguna->clearMediaCollection('pengguna');
-            $pengguna->addMediaFromRequest('image')->toMediaCollection('pengguna');
+        if ($request->has('asli_daerah')) {
+            $request->request->add(['asli_daerah' => '1']);
+        } else {
+            $request->request->add(['asli_daerah' => '0']);
         }
 
-        return to_route('pengguna.index')->with('status', 'update-success');
+        $pasien->update($request->all());
+        return to_route('pasien.index')->with('status', 'update-success');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $pengguna)
+    public function destroy(Pasien $pasien)
     {
-        $pengguna->delete();
+        $pasien->delete();
         return back()->with('status', 'delete-success');
     }
 }

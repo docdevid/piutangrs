@@ -8,16 +8,16 @@
                 <div class="card-body py-3">
 
                     <form id="form" method="POST"
-                        action="{{route('pengguna.update',$pengguna->id)}}"
+                        action="{{route('pasien.update',$pasien->id)}}"
                         enctype="multipart/form-data">
                         @csrf
                         @method('PUT')
-                        @include('pengguna._form')
+                        @include('pasien._form')
                     </form>
 
                 </div>
                 <div class="card-footer d-flex align-items-center gap-1">
-                    <a href="{{route('pengguna.index')}}" class="btn">Kembali</a>
+                    <a href="{{route('pasien.index')}}" class="btn">Kembali</a>
                     <button type="submit" form="form"
                         class="btn btn-primary">Perbarui</button>
                 </div>

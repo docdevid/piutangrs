@@ -7,29 +7,36 @@
             <div class="card">
                 <div class="card-body py-3">
                     <div class="row">
-                        <div class="col-12 col-md-1">
-                            @if($pengguna->getFirstMediaUrl('pengguna','preview'))
-                            <img
-                                src="{{$pengguna->getFirstMediaUrl('pengguna','preview')}}"
-                                class="rounded"
-                                style="width:100px; object-fit: cover;" />
-                            @else
-                            <img
-                                src="/static/default/default.png"
-                                class="rounded"
-                                style="width:100px; object-fit: cover;" />
-                            @endif
+                        <div class="col-12 col-md-8">
+                            <h2>{{$pasien->nama}} ({{$pasien->no_rm}})</h2>
+                            <table class="table table-borderless table-sm">
+                                <tr class="align-top">
+                                    <td class="text-muted col-2">Terdaftar</td>
+                                    <td class>{{$pasien->created_at->format('d M Y')}}</td>
+                                </tr>
+                                <tr class="align-top">
+                                    <td class="text-muted">Didaftarkan
+                                        oleh</td>
+                                    <td class>{{$pasien->creator->name ?? '-'}}</td>
+                                </tr>
+                                <tr class="align-top">
+                                    <td class="text-muted">Alamat</td>
+                                    <td class>{{$pasien->alamat}}</td>
+                                </tr>
+                                <tr class="align-middle">
+                                    <td class="text-muted">Asli
+                                        Purworejo</td>
+                                    <td class>{!!$pasien->asli_daerah
+                                        ? '<span class="text-success">Yes</span>' : '<span
+                                            class="text-danger">Yes</span>'!!}</td>
+                                </tr>
+                            </table>
 
-                        </div>
-                        <div class="col-12 col-md-4">
-                            <p class="h3"><span class="text-success fw-bold">{{$pengguna->getRoleNames()->implode(',')}}</span></p>
-                            <h2>{{$pengguna->name}}</h2>
-                            <p>{{$pengguna->email}}</p>
                         </div>
                     </div>
                 </div>
                 <div class="card-footer d-flex align-items-center">
-                    <a href="{{route('pengguna.index')}}" class="btn">Kembali</a>
+                    <a href="{{route('pasien.index')}}" class="btn">Kembali</a>
                 </div>
             </div>
         </div>

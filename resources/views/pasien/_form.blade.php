@@ -1,64 +1,45 @@
 <col-12 class="col-md-6">
     <div class="mb-2">
         <label for class="form-label col-12 col-md-4 fw-bold">Nama lengkap</label>
-        <input type="text" name="name"
+        <input type="text" name="nama"
             class="form-control"
-            value="{{old('name',$pengguna->name)}}"
-            placeholder="Masukan Nama lengkap" />
-        @error('name')
-        <span class="text-danger fst-italic">{{$errors->first('name')}}</span>
+            value="{{old('nama',$pasien->nama)}}"
+            placeholder="Masukan Nama Lengkap Pasien" />
+        @error('nama')
+        <span class="text-danger fst-italic">{{$message}}</span>
         @enderror
     </div>
     <div class="mb-2">
-        <label for class="form-label col-12 col-md-4 fw-bold">Email</label>
-        <input type="email" name="email" class="form-control"
-            value="{{old('email',$pengguna->email)}}"
-            placeholder="Masukan Email" />
-        @error('email')
-        <span class="text-danger fst-italic">{{$errors->first('email')}}</span>
+        <label for class="form-label col-12 col-md-4 fw-bold">No RM</label>
+        <input type="text" name="no_rm"
+            class="form-control"
+            value="{{old('no_rm',$pasien->no_rm)}}"
+            placeholder="Masukan Nomor Rekam medis Pasien" />
+        @error('no_rm')
+        <span class="text-danger fst-italic">{{$message}}</span>
         @enderror
     </div>
-    <div class="mb-2">
-        <label for class="form-label col-12 col-md-4 fw-bold">Password</label>
-        <input type="password" name="password" class="form-control"
-            placeholder="Masukan Password" />
-        @error('password')
-        <span class="text-danger fst-italic">{{$errors->first('password')}}</span>
+    <div class="mb-3">
+        <label for class="form-label col-12 col-md-4 fw-bold">Alamat Pasien</label>
+        <textarea class="form-control" name="alamat"
+            rows="5"
+            placeholder="Masukan alamat pasien">{{old('alamat',$pasien->alamat)}}</textarea>
+        @error('alamat')
+        <span class="text-danger fst-italic">{{$message}}</span>
         @enderror
     </div>
-    @if(!$pengguna->id)
-    <div class="mb-2">
-        <label for class="form-label col-12 col-md-4 fw-bold">Role</label>
-        <select name="role" class="form-control">
-            <option value>Pilih role</option>
-            @foreach($roles as $role)
-            <option value="{{$role->name}}"
-                {{old('role',$pengguna->getRoleNames()->first()) == $role->name
-                ? 'selected' : ''}}
-                >{{$role->name}}</option>
-            @endforeach
-        </select>
-
-        @error('role')
-        <span class="text-danger fst-italic">{{$errors->first('role')}}</span>
+    <div class="mb-3 form-check">
+        <input class="form-check-input" type="checkbox" value="1"
+            name="asli_daerah"
+            @checked(old('asli_daerah',$pasien->asli_daerah))
+        id="flexCheckChecked"/>
+        <label class="form-check-label" for="flexCheckChecked">
+            Masyarakat asli daerah (Purworejo)
+        </label>
+        <small class="text-muted fst-italic">Centang jika pasien merupakan warga
+            asli Purworejo.</small>
+        @error('asli_daerah')
+        <span class="text-danger fst-italic">{{$message}}</span>
         @enderror
-    </div>
-    @else
-    <div class="mb-2">
-        <label for class="form-label col-12 col-md-4 fw-bold">Role</label>
-        <input type="text" disabled readonly class="form-control"
-            value="{{$pengguna->getRoleNames()->first()}}" />
-    </div>
-    @endif
-    <div class="mb-2">
-        <label for class="form-label col-12 col-md-4 fw-bold">Foto profil</label>
-        <input type="file" name="image" class="form-control" />
-        @if($pengguna->getFirstMediaUrl('pengguna','preview') != '')
-        <div class="mt-3">
-            <img src="{{$pengguna->getFirstMediaUrl('pengguna','preview')}}"
-                class="rounded"
-                style="width:100px; object-fit: cover;" />
-        </div>
-        @endif
     </div>
 </col-12>
