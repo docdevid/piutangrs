@@ -50,15 +50,39 @@
                                 <span class="d-none d-md-inline">Tambah</span>
                             </a>
                         </div>
-                        <div class="ms-auto text-secondary ">
+                        <div class="text-secondary ms-2">
+                            <a href="{{route('piutang.create')}}"
+                                class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                    class="icon icon-tabler icon-tabler-database-export"
+                                    width="24" height="24" viewBox="0 0 24 24"
+                                    stroke-width="2" stroke="currentColor"
+                                    fill="none" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path stroke="none" d="M0 0h24v24H0z"
+                                        fill="none"></path>
+                                    <path
+                                        d="M4 6c0 1.657 3.582 3 8 3s8 -1.343 8 -3s-3.582 -3 -8 -3s-8 1.343 -8 3"></path>
+                                    <path
+                                        d="M4 6v6c0 1.657 3.582 3 8 3c1.118 0 2.183 -.086 3.15 -.241"></path>
+                                    <path d="M20 12v-6"></path>
+                                    <path
+                                        d="M4 12v6c0 1.657 3.582 3 8 3c.157 0 .312 -.002 .466 -.005"></path>
+                                    <path d="M16 19h6"></path>
+                                    <path d="M19 16l3 3l-3 3"></path>
+                                </svg>
+                                <span class="d-none d-md-inline">Export</span>
+                            </a>
+                        </div>
+                        <div class="ms-auto text-secondary">
                             <form method="GET"
                                 action="{{route('piutang.index')}}">
                                 <div class="d-flex gap-2">
                                     <input type="text"
-                                        class="form-control me-1"
-                                        name="month"
-                                        id="month"
-                                        value="{{request('month')}}"
+                                        class="form-control ms-2"
+                                        name="date"
+                                        id="date"
+                                        value="{{request('date')}}"
                                         aria-label="Cari data piutang">
 
                                     <input type="text"
@@ -87,6 +111,12 @@
                                     Perawatan</th>
                                 <th class="text-start" rowspan="2"><span
                                         class="px-4">Total</span></th>
+                                <th class="text-start" rowspan="2"><span
+                                        class>Cicilan</span></th>
+                                <th class="text-start" rowspan="2"><span
+                                        class>Sisa</span></th>
+                                <th class="text-start" rowspan="2"><span
+                                        class>Ket</span></th>
                                 <th class="text-end" rowspan="2"></th>
                             </tr>
                             <tr>
@@ -118,8 +148,8 @@
                                     class="text-secondary py-3 text-center small">{{$piutang->tgl_keluar->format('d/m/y')}}</td>
                                 <td class="text-secondary py-3 text-center">{{$piutang->zaal}}</td>
                                 @foreach($jenisPerawatans as $jenis)
-                                <td class="text-secondary text-start small">
-                                    <span class="p-2">
+                                <td class="text-secondary text-start">
+                                    <span class="px-3">
                                         @if($piutang->biaya_perawatan->count() >
                                         0)
                                         @php
@@ -143,8 +173,19 @@
                                         @endif
                                     </span>
                                 </td>
+                                <td class="text-start text-muted">
+                                    <span class="px-2">Rp
+                                        {{number_format($piutang->cicilan,2,',','.')}}</td></span>
+                                <td class="text-start text-muted">Rp
+                                    <span class="px-2">
+                                        {{number_format($piutang->sisa,2,',','.')}}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="px-2">-</span>
+                                </td>
 
-                                <td class="text-center">
+                                <td class="text-end">
                                     <span class="dropdown">
                                         <button
                                             class="btn dropdown-toggle"
@@ -152,7 +193,7 @@
                                             data-bs-toggle="dropdown">Aksi</button>
                                         <div
                                             class="dropdown-menu">
-                                            <a class="dropdown-item"
+                                            <a class="dropdown-item d-none"
                                                 href="{{route('piutang.show',$piutang->id)}}">
                                                 Detail
                                             </a>
@@ -196,9 +237,16 @@
             }
         }
 
-        window.Litepicker && (new Litepicker({
-            element:document.getElementById('month'),
-            dropdowns:{"minYear":1990,"maxYear":null,"months":false,"years":false}
-        }))
+        const lt = new Litepicker({
+            element:document.getElementById('date'),
+            buttonText: {
+    			previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
+    			nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+    		},
+            lang:'id-ID',
+            switchingMonths :1
+        })
     </script>
 </x-app-layout>

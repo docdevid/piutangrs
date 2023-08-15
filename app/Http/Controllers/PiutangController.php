@@ -6,6 +6,7 @@ use App\Models\BiayaPerawatan;
 use App\Models\JenisPerawatan;
 use App\Models\Pasien;
 use App\Models\Piutang;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -26,6 +27,10 @@ class PiutangController extends Controller
                 $q2->orWhere('no_rm', 'like', '%' . $request->search . '%');
             });
         })
+            ->when($request->has('date'), function ($q) use ($request) {
+                $date = Carbon::createFromFormat('Y-m-d', $request->date);
+                $q->whereMonth('created_at', $date->month);
+            })
             ->orderBy('id', 'desc')
             ->paginate(25);
         $jenisPerawatans = JenisPerawatan::orderBy('id', 'ASC')->get();
