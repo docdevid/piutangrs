@@ -18,6 +18,10 @@ return new class extends Migration
             $table->date('tgl_masuk');
             $table->date('tgl_keluar');
             $table->string('zaal');
+            $table->bigInteger('total');
+            $table->bigInteger('cicilan');
+            $table->bigInteger('sisa');
+            $table->text('keterangan');
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();

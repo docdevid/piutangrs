@@ -53,12 +53,19 @@
                         <div class="ms-auto text-secondary ">
                             <form method="GET"
                                 action="{{route('piutang.index')}}">
-                                <div class="ms-2 d-flex">
+                                <div class="d-flex gap-2">
+                                    <input type="text"
+                                        class="form-control me-1"
+                                        name="month"
+                                        id="month"
+                                        value="{{request('month')}}"
+                                        aria-label="Cari data piutang">
+
                                     <input type="text"
                                         class="form-control me-1"
                                         name="search"
                                         value="{{request('search')}}"
-                                        aria-label="Search invoice">
+                                        aria-label="Cari data piutang">
                                     <button class="btn btn-primary">Cari</button>
                                 </div>
                             </form>
@@ -70,23 +77,26 @@
                         class="table card-table table-vcenter text-nowrap datatable table-stripped table-sm ">
                         <thead>
                             <tr>
-                                <th style="width: 60px;" rowspan="2">No.</th>
+                                <th style="width: 40px;" rowspan="2">No.</th>
                                 <th class="col-2" rowspan="2">Nama Pasien</th>
-                                <th class="col-1" rowspan="2">No RM</th>
+                                <th class="col-1" rowspan="2">No Rekam Medis</th>
                                 <th class="col-1 text-center" colspan="2">Tanggal</th>
                                 <th class="col-1 text-center" rowspan="2">Zaal</th>
                                 <th colspan="{{$jenisPerawatans->count()}}"
                                     class="text-center">Biaya
                                     Perawatan</th>
+                                <th class="text-start" rowspan="2"><span
+                                        class="px-4">Total</span></th>
                                 <th class="text-end" rowspan="2"></th>
                             </tr>
                             <tr>
                                 <th class="col-1 text-center">Masuk</th>
                                 <th class="col-1 text-center">Keluar</th>
                                 @foreach($jenisPerawatans as $jenis)
-                                <th class="col text-center">{{$jenis->nama}}</th>
+                                <th class="col text-start"><span class="px-2">{{$jenis->nama}}</span></th>
                                 @endforeach
-                                <th class="col text-center"></th>
+                                <th class="col text-start"></th>
+                                <th class="col text-end"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -99,15 +109,41 @@
                             @foreach($piutangs as $piutang)
                             <tr>
                                 <td class="text-secondary">{{++$no}}</td>
-                                <td class="text-secondary py-3">{{$piutang->pasien->nama}}</td>
+                                <td class=" py-3">{{$piutang->pasien->nama}}</td>
                                 <td class="text-secondary py-3"><span
                                         class="p-1 bg-success-lt">{{$piutang->pasien->no_rm}}</span></td>
-                                <td class="text-secondary py-3 text-center">{{$piutang->tgl_masuk->format('d/m/y')}}</td>
-                                <td class="text-secondary py-3 text-center">{{$piutang->tgl_keluar->format('d/m/y')}}</td>
+                                <td
+                                    class="text-secondary py-3 text-center small">{{$piutang->tgl_masuk->format('d/m/y')}}</td>
+                                <td
+                                    class="text-secondary py-3 text-center small">{{$piutang->tgl_keluar->format('d/m/y')}}</td>
                                 <td class="text-secondary py-3 text-center">{{$piutang->zaal}}</td>
                                 @foreach($jenisPerawatans as $jenis)
-                                <td class="text-secondary text-center">{{$jenis->nama}}</td>
+                                <td class="text-secondary text-start small">
+                                    <span class="p-2">
+                                        @if($piutang->biaya_perawatan->count() >
+                                        0)
+                                        @php
+                                        $biaya =
+                                        $piutang->biaya_perawatan->where('jenis_perawatan_id','=',$jenis->id)->first()->toArray()['biaya']
+                                        @endphp
+                                        {{'Rp '.number_format($biaya,2,'.',',')}}
+                                        @else
+                                        Rp 0.00
+                                        @endif
+                                    </span>
+                                </td>
                                 @endforeach
+                                <td class="text-secondary py-3 text-start">
+                                    <span class="px-4">
+                                        @if($piutang->biaya_perawatan->count())
+                                        Rp
+                                        {{number_format($piutang->biaya_perawatan->pluck('biaya')->sum(),2,',','.')}}
+                                        @else
+                                        Rp 0.00
+                                        @endif
+                                    </span>
+                                </td>
+
                                 <td class="text-center">
                                     <span class="dropdown">
                                         <button
@@ -120,7 +156,7 @@
                                                 href="{{route('piutang.show',$piutang->id)}}">
                                                 Detail
                                             </a>
-                                            <a class="dropdown-item"
+                                            <a class="dropdown-item d-none"
                                                 href="{{route('piutang.edit',$piutang->id)}}">
                                                 Edit
                                             </a>
@@ -152,12 +188,17 @@
             </div>
         </div>
     </div>
-    <script>
+    <script type="module">
         function showingDeleteConfirmation(form,id){
             let isConfirm = confirm('Hapus data ini ?');
             if(isConfirm){
                 form.nextElementSibling.submit()
             }
         }
+
+        window.Litepicker && (new Litepicker({
+            element:document.getElementById('month'),
+            dropdowns:{"minYear":1990,"maxYear":null,"months":false,"years":false}
+        }))
     </script>
 </x-app-layout>

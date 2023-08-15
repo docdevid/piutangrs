@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BiayaPerawatanController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\JenisPerawatanController;
 use App\Http\Controllers\PasienController;
@@ -26,7 +27,13 @@ Route::get('/', function () {
 Route::get('/dashboard', [DashboardController::class, '__invoke'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    /**
+     * piutang
+     */
+    Route::get('/piutang/pasien', [PiutangController::class, 'getPasien'])->name('piutang.pasien');
     Route::resource('/piutang', PiutangController::class);
+
+
     Route::resource('/jenis-perawatan', JenisPerawatanController::class);
     Route::resource('/pasien', PasienController::class);
     Route::resource('/pengguna', PenggunaController::class);

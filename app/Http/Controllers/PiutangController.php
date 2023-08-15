@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\BiayaPerawatan;
 use App\Models\JenisPerawatan;
 use App\Models\Pasien;
 use App\Models\Piutang;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PiutangController extends Controller
 {
@@ -19,7 +21,10 @@ class PiutangController extends Controller
     {
         $title = $this->title;
         $piutangs = Piutang::when($request->has('search'), function ($q) use ($request) {
-            $q->where('nama', 'like', '%' . $request->search . '%');
+            $q->whereHas('pasien', function ($q2) use ($request) {
+                $q2->where('nama', 'like', '%' . $request->search . '%');
+                $q2->orWhere('no_rm', 'like', '%' . $request->search . '%');
+            });
         })
             ->orderBy('id', 'desc')
             ->paginate(25);
@@ -32,23 +37,43 @@ class PiutangController extends Controller
      */
     public function create()
     {
-        $jenisPerawatan = new JenisPerawatan();
         $title = $this->title;
-
-        return view('piutang.create', compact('title', 'jenisPerawatan'));
+        $jenisPerawatan = new JenisPerawatan();
+        $jenisPerawatans = JenisPerawatan::orderBy('id', 'ASC')->get();
+        return view('piutang.create', compact('title', 'jenisPerawatan', 'jenisPerawatans'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request, JenisPerawatan $jenisPerawatan)
+    public function store(Request $request, Piutang $piutang)
     {
         $request->validate([
-            'nama' => 'required',
-            'biaya' => 'numeric'
+            'pasien_id' => 'required',
+            'tgl_masuk' => 'required',
+            'tgl_keluar' => 'required',
+            'zaal' => 'required',
+            'cicilan' => 'required',
         ]);
 
-        $jenisPerawatan->create($request->all());
+        // save jenis perawatan dan biaya
+
+
+        $request->request->add(['sisa' => 0]);
+        $request->request->add(['total' => 0]);
+        $piutang = $piutang->create($request->all());
+
+        $piutang_id = $piutang->id;
+
+        foreach ($request->jenis_perawatan as $id => $jp) {
+            BiayaPerawatan::create(
+                [
+                    'piutang_id' => $piutang_id,
+                    'jenis_perawatan_id' => $id,
+                    'biaya' => $jp
+                ]
+            );
+        }
 
         return to_route('piutang.index')->with('status', 'create-success');
     }
@@ -88,9 +113,23 @@ class PiutangController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(JenisPerawatan $jenisPerawatan)
+    public function destroy(Piutang $piutang)
     {
-        $jenisPerawatan->delete();
+        $piutang->delete();
         return back()->with('status', 'delete-success');
+    }
+
+    /**
+     * get pasien data
+     */
+
+    public function getPasien()
+    {
+        $query = request()->query('search');
+        $pasien = Pasien::where('nama', 'like', '%' . $query . '%')
+            ->orWhere('no_rm', 'like', '%' . $query . '%')
+            ->limit(5)
+            ->get();
+        return response()->json(['items' => $pasien], 200);
     }
 }

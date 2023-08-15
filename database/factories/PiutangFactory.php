@@ -24,6 +24,10 @@ class PiutangFactory extends Factory
             'tgl_masuk' => fake()->date(),
             'tgl_keluar' => fake()->date(),
             'zaal' => 'A',
+            'total' => 1000,
+            'cicilan' => 2000,
+            'sisa' => 3000,
+            'keterangan' => fake()->sentence(6),
             'created_at' => now(),
         ];
     }

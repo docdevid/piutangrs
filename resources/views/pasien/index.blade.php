@@ -89,7 +89,8 @@
                                 <td class="text-secondary">{{++$no}}</td>
                                 <td class="text-secondary py-3">{{$pasien->nama}}</td>
                                 <td>
-                                    <span class="bg-dark-lt p-1 small rounded">
+                                    <span
+                                        class="bg-success-lt p-1 rounded">
                                         {{$pasien->no_rm}}
                                     </span>
                                 </td>
@@ -98,6 +99,7 @@
                                 </td>
                                 <td class="text-secondary py-3 small">{{$pasien->created_at->format('d M Y')}}</td>
                                 <td class="text-end">
+
                                     <span class="dropdown">
                                         <button
                                             class="btn dropdown-toggle"
@@ -109,7 +111,7 @@
                                                 href="{{route('pasien.show',$pasien->id)}}">
                                                 Detail
                                             </a>
-                                            <a class="dropdown-item"
+                                            <a class="dropdown-item "
                                                 href="{{route('pasien.edit',$pasien->id)}}">
                                                 Edit
                                             </a>

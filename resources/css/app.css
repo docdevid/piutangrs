@@ -3,3 +3,31 @@
 @tailwind utilities; */
 @import 'tabler.min.css';
 @import 'sidebar-menu.css';
+@import '/node_modules/tom-select/dist/css/tom-select.default.css';
+@import 'vendor.css';
+
+
+.litepicker {
+    font-size: 0.75rem;
+}
+
+.ts-control{
+    box-shadow: none !important;
+    background-color: inherit !important;
+    background-image: none !important;
+    border:var(--tblr-border-width) solid var(--tblr-border-color) !important;
+}
+
+.ts-dropdown{
+    border:var(--tblr-border-width) solid var(--tblr-border-color) !important;
+}
+
+@import url('https://rsms.me/inter/inter.css');
+
+:root {
+    --tblr-font-sans-serif: 'Inter Var', -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif;
+}
+
+body {
+    font-feature-settings: "cv03", "cv04", "cv11";
+}

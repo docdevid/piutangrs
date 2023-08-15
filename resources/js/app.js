@@ -1,1 +1,2 @@
+import './litepicker'
 import './tabler'

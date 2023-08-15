@@ -8,14 +8,14 @@
                 <div class="card-body py-3">
 
                     <form id="form" method="POST"
-                        action="{{route('jenis-perawatan.store')}}">
+                        action="{{route('piutang.store')}}">
                         @csrf
-                        @include('jenis-perawatan._form')
+                        @include('piutang._form')
                     </form>
 
                 </div>
                 <div class="card-footer d-flex align-items-center gap-1">
-                    <a href="{{route('jenis-perawatan.index')}}" class="btn">Kembali</a>
+                    <a href="{{route('piutang.index')}}" class="btn">Kembali</a>
                     <button type="submit" form="form"
                         class="btn btn-primary">Simpan</button>
                 </div>
