@@ -51,7 +51,7 @@
                             </a>
                         </div>
                         <div class="text-secondary ms-2">
-                            <a href="{{route('piutang.create')}}"
+                            <a href="{{route('piutang.export')}}"
                                 class="btn btn-primary">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="icon icon-tabler icon-tabler-database-export"
@@ -135,6 +135,7 @@
                             $no = ($piutangs->perPage() *
                             $piutangs->currentPage()) -
                             $piutangs->perPage()
+
                             @endphp
                             @foreach($piutangs as $piutang)
                             <tr>
@@ -166,8 +167,12 @@
                                 <td class="text-secondary py-3 text-start">
                                     <span class="px-4">
                                         @if($piutang->biaya_perawatan->count())
+                                        @php
+                                        $total =
+                                        $piutang->biaya_perawatan->pluck('biaya')->sum();
+                                        @endphp
                                         Rp
-                                        {{number_format($piutang->biaya_perawatan->pluck('biaya')->sum(),2,',','.')}}
+                                        {{number_format($total,2,',','.')}}
                                         @else
                                         Rp 0.00
                                         @endif
@@ -178,7 +183,11 @@
                                         {{number_format($piutang->cicilan,2,',','.')}}</td></span>
                                 <td class="text-start text-muted">Rp
                                     <span class="px-2">
-                                        {{number_format($piutang->sisa,2,',','.')}}
+                                        @php
+                                        $sisa = ($total ?? 0) -
+                                        $piutang->cicilan
+                                        @endphp
+                                        {{number_format($sisa,2,',','.')}}
                                     </span>
                                 </td>
                                 <td>
@@ -229,13 +238,16 @@
             </div>
         </div>
     </div>
-    <script type="module">
-        function showingDeleteConfirmation(form,id){
+    <script>
+            function showingDeleteConfirmation(form,id){
             let isConfirm = confirm('Hapus data ini ?');
             if(isConfirm){
                 form.nextElementSibling.submit()
             }
         }
+    </script>
+    <script type="module">
+    
 
         const lt = new Litepicker({
             element:document.getElementById('date'),

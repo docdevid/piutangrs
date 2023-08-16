@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\PiutangExport;
 use App\Models\BiayaPerawatan;
 use App\Models\JenisPerawatan;
 use App\Models\Pasien;
 use App\Models\Piutang;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PiutangController extends Controller
 {
@@ -136,5 +137,26 @@ class PiutangController extends Controller
             ->limit(5)
             ->get();
         return response()->json(['items' => $pasien], 200);
+    }
+
+    public function showExport()
+    {
+        $title = 'Export ' . $this->title;
+        return view('piutang.export', compact('title'));
+    }
+
+    public function export(Request $request)
+    {
+        return Excel::download(new PiutangExport, 'piutang.xls');
+
+        // $year = $request->query('year');
+        // $piutangs = Piutang::when($request->has('year'), function ($q) use ($request) {
+        //     $date = Carbon::createFromFormat('Y', $request->year);
+        //     $q->whereYear('created_at', $date->year);
+        // })
+        //     ->orderBy('id', 'desc')
+        //     ->paginate(25);
+        // $jenisPerawatans = JenisPerawatan::orderBy('id', 'ASC')->get();
+        // return view('exports.piutang', compact('piutangs', 'year', 'jenisPerawatans'));
     }
 }

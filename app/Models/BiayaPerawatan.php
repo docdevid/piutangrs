@@ -17,4 +17,10 @@ class BiayaPerawatan extends Model
     {
         return number_format($this->biaya, 2, '.', ',');
     }
+
+    public function forYear($year)
+    {
+        $this->year = $year;
+        return $this;
+    }
 }

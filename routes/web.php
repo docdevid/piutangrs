@@ -30,6 +30,8 @@ Route::middleware('auth')->group(function () {
     /**
      * piutang
      */
+    Route::get('/piutang/export', [PiutangController::class, 'showExport'])->name('piutang.export');
+    Route::get('/piutang/export/excel', [PiutangController::class, 'export'])->name('piutang.excel');
     Route::get('/piutang/pasien', [PiutangController::class, 'getPasien'])->name('piutang.pasien');
     Route::resource('/piutang', PiutangController::class);
 
