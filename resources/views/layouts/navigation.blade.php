@@ -210,7 +210,7 @@
                 <a href="#" class="nav-link d-flex lh-1 text-reset p-0"
                     data-bs-toggle="dropdown" aria-label="Open user menu">
                     <span class="avatar avatar-sm"
-                        style="background-image: url({{Auth::user()->getFirstMediaUrl('pengguna','preview') ?? '/static/default/default-user.png'}})"></span>
+                        style="background-image: url({{Auth::user()->getFirstMediaUrl('pengguna','preview') ?? asset('static/default/default-user.png')}})"></span>
                     <div class="d-xl-block ps-2 d-none">
                         <div>{{Auth::user()->name}}</div>
                         <div class="mt-1 small text-muted">{{Auth::user()->email}}</div>
@@ -446,7 +446,7 @@
                     @else
                     <img
                         class="rounded border border-dark"
-                        src="/static/default/default-user.png"
+                        src="{{asset('static/default/default-user.png')}}"
                         style="width: 3rem;" />
                     @endif
                     <div class="d-flex flex-column gap-1">

@@ -28,9 +28,11 @@ class PiutangController extends Controller
                 $q2->orWhere('no_rm', 'like', '%' . $request->search . '%');
             });
         })
-            ->when($request->has('date'), function ($q) use ($request) {
-                $date = Carbon::createFromFormat('Y-m-d', $request->date);
+            ->when($request->has('month') || $request->has('year'), function ($q) use ($request) {
+                $format = ($request->month ?? now()->month) . ' ' . ($request->year ?? now()->year);
+                $date = Carbon::createFromFormat('m Y', $format);
                 $q->whereMonth('created_at', $date->month);
+                $q->whereYear('created_at', $date->year);
             })
             ->orderBy('id', 'desc')
             ->paginate(25);
@@ -148,15 +150,15 @@ class PiutangController extends Controller
     public function export(Request $request)
     {
         $year = $request->query('year');
-        // return Excel::download(new PiutangExport, 'data-piutang-' . $year . '.xls');
+        return Excel::download(new PiutangExport, 'data-piutang-' . $year . '.xls');
 
-        $piutangs = Piutang::when($request->has('year'), function ($q) use ($request) {
-            $date = Carbon::createFromFormat('Y', $request->year);
-            $q->whereYear('created_at', $date->year);
-        })
-            ->orderBy('id', 'desc')
-            ->paginate(25);
-        $jenisPerawatans = JenisPerawatan::orderBy('id', 'ASC')->get();
-        return view('exports.piutang', compact('piutangs', 'year', 'jenisPerawatans'));
+        // $piutangs = Piutang::when($request->has('year'), function ($q) use ($request) {
+        //     $date = Carbon::createFromFormat('Y', $request->year);
+        //     $q->whereYear('created_at', $date->year);
+        // })
+        //     ->orderBy('id', 'desc')
+        //     ->paginate(25);
+        // $jenisPerawatans = JenisPerawatan::orderBy('id', 'ASC')->get();
+        // return view('exports.piutang', compact('piutangs', 'year', 'jenisPerawatans'));
     }
 }

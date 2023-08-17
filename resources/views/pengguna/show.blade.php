@@ -15,7 +15,7 @@
                                 style="width:100px; object-fit: cover;" />
                             @else
                             <img
-                                src="/static/default/default.png"
+                                src="{{asset('static/default/default-user.png')}}"
                                 class="rounded"
                                 style="width:100px; object-fit: cover;" />
                             @endif

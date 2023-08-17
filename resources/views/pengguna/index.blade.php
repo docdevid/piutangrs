@@ -95,7 +95,7 @@
                                         style="width: 40px;height: auto;" />
                                     @else
                                     <img class="rounded"
-                                        src="/static/default/default-user.png"
+                                        src="{{asset('static/default/default-user.png')}}"
                                         style="width: 40px;height: auto;object-fit: cover;" />
                                     @endif
                                 </td>
