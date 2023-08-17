@@ -1,5 +1,4 @@
 @php
-
 $bulan = array(
 1 => "Januari",
 2 => "Februari",
@@ -14,7 +13,6 @@ $bulan = array(
 11 => "November",
 12 => "Desember"
 );
-
 @endphp
 
 @for($i = 1; $i <=count($bulan);$i++)
@@ -224,6 +222,48 @@ $data_ = $data[$i]
                 style="text-align:center;font-weight:bold;border:1px solid black;border-collapse: collapse;"></th>
         </tr>
     </tfoot>
+</table>
+<table>
+    <tr>
+        @for($i=1; $i <= 11;$i++)
+        <td></td>
+        @endfor
+        <td colspan="3" style="text-align: center;">Purworejo,
+            {{now()->translatedFormat('j F Y')}}</td>
+    </tr>
+    <tr>
+        @for($i=1; $i <= 11;$i++)
+        <td></td>
+        @endfor
+        <td colspan="3" style="text-align: center;">Kepala Bagian Keuangan</td>
+    </tr>
+
+    @for($i = 0; $i <= 2;$i++)
+    <tr>
+        @for($j=1; $j <= 11;$j++)
+        <td></td>
+        @endfor
+        <td colspan="3" style="text-align: center;"></td>
+    </tr>
+    @endfor
+
+    <tr>
+        @for($i=1; $i <= 11;$i++)
+        <td></td>
+        @endfor
+        <td colspan="3"
+            style="text-align: center;border-bottom: 1px solid black;border-collapse: collapse;">
+            <p>Dra. Widiaastuti</p>
+        </td>
+    </tr>
+    <tr>
+        @for($i=1; $i <= 11;$i++)
+        <td></td>
+        @endfor
+        <td colspan="3" style="text-align: center;">
+            <p>NIP. 196611202 2 002</p>
+        </td>
+    </tr>
 </table>
 @endif
 @endfor

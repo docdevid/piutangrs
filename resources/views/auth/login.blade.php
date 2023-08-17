@@ -32,7 +32,7 @@
             </form>
         </div>
     </div>
-    <div class="text-center text-secondary mt-3">
+    <div class="text-center text-secondary mt-3 d-none">
         Belum punya akun ? <a href="{{route('register')}}"
             tabindex="-1">Daftar sekarang</a>
     </div>

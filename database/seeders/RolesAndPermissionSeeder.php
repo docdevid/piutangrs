@@ -15,8 +15,8 @@ class RolesAndPermissionSeeder extends Seeder
     {
         // role
         $superAdmin = Role::create(['name' => 'Super Admin']);
-        $superAdmin = Role::create(['name' => 'Bendahara']);
-        $superAdmin = Role::create(['name' => 'Data Entry']);
+        $bendahara = Role::create(['name' => 'Bendahara']);
+        $dataEntry = Role::create(['name' => 'Data Entry']);
 
 
         // permission
@@ -25,5 +25,12 @@ class RolesAndPermissionSeeder extends Seeder
         Permission::create(['name' => 'show jenis perawatan']);
         Permission::create(['name' => 'show pasien']);
         Permission::create(['name' => 'show pengaturan']);
+
+        $bendahara->givePermissionTo('show dashboard');
+        $bendahara->givePermissionTo('show piutang');
+        $bendahara->givePermissionTo('show pengaturan');
+        $dataEntry->givePermissionTo('show dashboard');
+        $dataEntry->givePermissionTo('show piutang');
+        $dataEntry->givePermissionTo('show pengaturan');
     }
 }

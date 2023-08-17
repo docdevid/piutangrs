@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Charts\JenisPerawatanChart;
+use App\Charts\KunjunganYearly;
 use App\Charts\RoleUserChart;
 use Illuminate\Http\Request;
 
@@ -10,9 +12,11 @@ class DashboardController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request, RoleUserChart $chart)
+    public function __invoke(Request $request, RoleUserChart $chart, JenisPerawatanChart $jenisPerawatanChart, KunjunganYearly $kunjunganChart)
     {
         $chart = $chart->build();
-        return view('dashboard', compact('chart'));
+        $jenisPerawatanChart = $jenisPerawatanChart->build();
+        $kunjunganChart = $kunjunganChart->build();
+        return view('dashboard', compact('chart', 'jenisPerawatanChart', 'kunjunganChart'));
     }
 }

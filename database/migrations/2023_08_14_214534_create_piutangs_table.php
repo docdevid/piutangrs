@@ -21,7 +21,7 @@ return new class extends Migration
             $table->bigInteger('total');
             $table->bigInteger('cicilan');
             $table->bigInteger('sisa');
-            $table->text('keterangan');
+            $table->text('keterangan')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->unsignedBigInteger('deleted_by')->nullable();

@@ -1,10 +1,10 @@
 /* @tailwind base;
 @tailwind components;
 @tailwind utilities; */
+@import 'vendor.css';
 @import 'tabler.min.css';
 @import 'sidebar-menu.css';
 @import '/node_modules/tom-select/dist/css/tom-select.default.css';
-@import 'vendor.css';
 
 
 .litepicker {

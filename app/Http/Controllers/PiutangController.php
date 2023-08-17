@@ -147,16 +147,16 @@ class PiutangController extends Controller
 
     public function export(Request $request)
     {
-        return Excel::download(new PiutangExport, 'piutang.xls');
+        $year = $request->query('year');
+        // return Excel::download(new PiutangExport, 'data-piutang-' . $year . '.xls');
 
-        // $year = $request->query('year');
-        // $piutangs = Piutang::when($request->has('year'), function ($q) use ($request) {
-        //     $date = Carbon::createFromFormat('Y', $request->year);
-        //     $q->whereYear('created_at', $date->year);
-        // })
-        //     ->orderBy('id', 'desc')
-        //     ->paginate(25);
-        // $jenisPerawatans = JenisPerawatan::orderBy('id', 'ASC')->get();
-        // return view('exports.piutang', compact('piutangs', 'year', 'jenisPerawatans'));
+        $piutangs = Piutang::when($request->has('year'), function ($q) use ($request) {
+            $date = Carbon::createFromFormat('Y', $request->year);
+            $q->whereYear('created_at', $date->year);
+        })
+            ->orderBy('id', 'desc')
+            ->paginate(25);
+        $jenisPerawatans = JenisPerawatan::orderBy('id', 'ASC')->get();
+        return view('exports.piutang', compact('piutangs', 'year', 'jenisPerawatans'));
     }
 }

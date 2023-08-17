@@ -2,6 +2,7 @@
 
 namespace App\Charts;
 
+use App\Models\Pasien;
 use ArielMejiaDev\LarapexCharts\LarapexChart;
 
 class RoleUserChart
@@ -17,9 +18,12 @@ class RoleUserChart
     {
 
         return $this->chart->pieChart()
-            ->setTitle('Top 3 scorers of the team.')
-            ->setSubtitle('Season 2021.')
-            ->addData([20, 24, 30])
-            ->setLabels(['Player 7', 'Player 10', 'Player 9']);
+            ->setTitle('Distribusi Pasien Berdasarkan Domisili')
+            ->setSubtitle('Tahun 2023')
+            ->addData([
+                Pasien::where('asli_daerah', '=', '1')->count(),
+                Pasien::where('asli_daerah', '=', '0')->count()
+            ])
+            ->setLabels(['Purworejo', 'Luar Purworejo']);
     }
 }
