@@ -11,12 +11,17 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    public function __construct(public $title = 'Pengaturan')
+    {
+    }
     /**
      * Display the user's profile form.
      */
     public function edit(Request $request): View
     {
+        $title = $this->title;
         return view('profile.edit', [
+            'title' => $title,
             'user' => $request->user(),
         ]);
     }
