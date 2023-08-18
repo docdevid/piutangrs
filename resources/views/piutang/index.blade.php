@@ -98,7 +98,8 @@
 
                                         @foreach($bulan as $i => $b)
                                         <option value="{{$i}}"
-                                            @selected(old('month',now()->format('m'))
+                                            @selected(old('month',(request('month')
+                                            ?? now()->format('m')),now()->format('m'))
                                             ==
                                             $i)>{{$b}}</option>
                                         @endforeach
