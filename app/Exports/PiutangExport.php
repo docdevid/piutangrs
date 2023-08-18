@@ -18,7 +18,7 @@ class PiutangExport implements FromView
         $request = request()->all();
         $year = $request['year'];
 
-        $piutangs = Piutang::when($year, function ($q) use ($year) {
+        $piutangs = Piutang::has('pasien')->when($year, function ($q) use ($year) {
             $date = Carbon::createFromFormat('Y', $year);
             $q->whereYear('created_at', $date->year);
         })

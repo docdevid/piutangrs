@@ -22,7 +22,7 @@ class PiutangController extends Controller
     public function index(Request $request)
     {
         $title = $this->title;
-        $piutangs = Piutang::when($request->has('search'), function ($q) use ($request) {
+        $piutangs = Piutang::has('pasien')->when($request->has('search'), function ($q) use ($request) {
             $q->whereHas('pasien', function ($q2) use ($request) {
                 $q2->where('nama', 'like', '%' . $request->search . '%');
                 $q2->orWhere('no_rm', 'like', '%' . $request->search . '%');
