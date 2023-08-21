@@ -16,7 +16,7 @@ class Piutang extends Model
     protected $table = 'piutang';
     protected $fillable = ['pasien_id', 'tgl_masuk', 'tgl_keluar', 'zaal', 'total', 'cicilan', 'sisa', 'keterangan'];
 
-    protected $with = ['pasien'];
+    protected $with = ['pasien', 'biaya_perawatan'];
 
     protected $casts = [
         'tgl_masuk' => 'date',

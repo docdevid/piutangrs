@@ -29,10 +29,14 @@ class PiutangController extends Controller
             });
         })
             ->when($request->has('month') || $request->has('year'), function ($q) use ($request) {
-                $format = ($request->month ?? now()->month) . ' ' . ($request->year ?? now()->year);
-                $date = Carbon::createFromFormat('m Y', $format);
-                $q->whereMonth('created_at', $date->month);
-                $q->whereYear('created_at', $date->year);
+                if ($request->month != '-') {
+                    $month = ($request->month ?? now()->month);
+                    $month = Carbon::createFromFormat('m', $month);
+                    $q->whereMonth('tgl_keluar', $month->month);
+                }
+                $year =  ($request->year ?? now()->year);
+                $date = Carbon::createFromFormat('Y', $year);
+                $q->whereYear('tgl_keluar', $date->year);
             })
             ->orderBy('id', 'desc')
             ->paginate(25);
@@ -88,33 +92,53 @@ class PiutangController extends Controller
 
     /**
      * Display the specified resource.
-     */
-    public function show(Pasien $pasien)
-    {
-        $title = $this->title;
-        return view('piutang.show', compact('pasien', 'title'));
-    }
+    //  */
+    // public function show(Pasien $pasien)
+    // {
+    //   
+    // }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(JenisPerawatan $jenisPerawatan)
+    public function edit(Piutang $piutang)
     {
         $title = $this->title;
-        return view('piutang.edit', compact('title', 'jenisPerawatan'));
+        $jenisPerawatans = JenisPerawatan::orderBy('id', 'ASC')->get();
+        return view('piutang.edit', compact('title', 'piutang', 'jenisPerawatans'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, JenisPerawatan $jenisPerawatan)
+    public function update(Request $request, Piutang $piutang)
     {
         $request->validate([
-            'nama' => 'required',
-            'biaya' => 'numeric'
+            'pasien_id' => 'required',
+            'tgl_masuk' => 'required',
+            'tgl_keluar' => 'required',
+            'zaal' => 'required',
+            'cicilan' => 'required',
         ]);
 
-        $jenisPerawatan->update($request->all());
+        $request->request->add(['sisa' => 0]);
+        $request->request->add(['total' => 0]);
+        $piutang->update($request->all());
+
+
+        // hapus biaya perawatan lama dan save jenis perawatan dan biaya
+        BiayaPerawatan::where('piutang_id', $piutang->id)->delete();
+
+        foreach ($request->jenis_perawatan as $id => $jp) {
+            BiayaPerawatan::create(
+                [
+                    'piutang_id' => $piutang->id,
+                    'jenis_perawatan_id' => $id,
+                    'biaya' => $jp
+                ]
+            );
+        }
+
         return to_route('piutang.index')->with('status', 'update-success');
     }
 

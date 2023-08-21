@@ -4,7 +4,13 @@
         <label for class="form-label col-12 col-md-4 fw-bold">Masukan nama
             pasien</label>
         <select id="selectPasien" name="pasien_id"
-            placeholder="Masukan nama pasien atau No Rekam Medis..."></select>
+            placeholder="Masukan nama pasien atau No Rekam Medis...">
+            <option value="{{$piutang->pasien_id}}"
+                data-no_rm="{{$piutang->pasien->no_rm}}"
+                selected>
+                {{$piutang->pasien->nama}}
+            </option>
+        </select>
 
         @error('pasien_id')
         <span class="text-danger fst-italic">{{$message}}</span>
@@ -16,7 +22,7 @@
                 <label for class="form-label col-12 col-md-4 fw-bold">Tgl Masuk</label>
                 <input type="date" name="tgl_masuk"
                     class="form-control"
-                    value="{{old('tgl_masuk',$jenisPerawatan->tgl_masuk)}}"
+                    value="{{old('tgl_masuk',$piutang->tgl_masuk->format('Y-m-d'))}}"
                     placeholder="Masukan tgl masuk" />
                 @error('tgl_masuk')
                 <span class="text-danger fst-italic">{{$message}}</span>
@@ -27,7 +33,7 @@
                 <label for class="form-label col-12 col-md-4 fw-bold">Tgl Keluar</label>
                 <input type="date" name="tgl_keluar"
                     class="form-control"
-                    value="{{old('tgl_keluar',$jenisPerawatan->tgl_keluar)}}"
+                    value="{{old('tgl_keluar',$piutang->tgl_keluar->format('Y-m-d'))}}"
                     placeholder="Masukan tgl keluar" />
                 @error('tgl_keluar')
                 <span class="text-danger fst-italic">{{$message}}</span>
@@ -39,7 +45,7 @@
     <div class="mb-2">
         <label for class="form-label fw-bold">Zaal</label>
         <input type="text" class="form-control" name="zaal"
-            value="{{old('zaal',$jenisPerawatan->zaal)}}" />
+            value="{{old('zaal',$piutang->zaal)}}" />
         @error('zaal')
         <span class="text-danger fst-italic">{{$message}}</span>
         @enderror
@@ -54,7 +60,8 @@
                     <td>
                         <input type="number" name="jenis_perawatan[{{$jp->id}}]"
                             class="form-control"
-                            value="{{old("jenis_perawatan.".$jp->id,0)}}"
+                            value="{{old("jenis_perawatan.".$jp->id,$piutang->biaya_perawatan->where('jenis_perawatan_id',$jp->id)->first()->biaya
+                        ?? 0)}}"
                         />
                     </td>
                 </tr>
@@ -65,7 +72,7 @@
     <div class="mb-2">
         <label for class="form-label fw-bold">Cicilan</label>
         <input type="number" name="cicilan" id class="form-control"
-            value="{{old('cicilan',$jenisPerawatan->cicilan)}}">
+            value="{{old('cicilan',$piutang->cicilan)}}">
         @error('cicilan')
         <span class="text-danger fst-italic">{{$message}}</span>
         <br />
@@ -73,7 +80,7 @@
     </div>
     <div class="mb-2">
         <label for class="form-label fw-bold">Keterangan</label>
-        <textarea name="keterangan" id cols="30" rows="4" class="form-control">{{old('keterangan',$jenisPerawatan->keterangan)}}</textarea>
+        <textarea name="keterangan" id cols="30" rows="4" class="form-control">{{old('keterangan',$piutang->keterangan)}}</textarea>
     </div>
 </col-12>
 
@@ -97,14 +104,14 @@
         render:{
             option:function(item,escape){
                 return `<div class="d-flex gap-4 align-items-center justify-content-start">
-                    <span class="col-2">${item.nama}</span>
-                    <span class="bg-secondary-lt p-1">${item.no_rm}</span>
+                    <span class="col text-nowrap">${item.nama}</span>
+                    <span class="">${item.no_rm}</span>
                 </div>`
             },
             item:function(item,escape){
                 return `<div class="d-flex gap-4 align-items-center justify-content-start">
-                    <span class="">${item.nama}</span>
-                    <span class="fw-bold text-primary">(${item.no_rm})</span>
+                    <span class="col text-nowrap">${item.nama}</span>
+                    <span class="fw-bold">( ${item.no_rm} )</span>
                     </div>`
             }
         }

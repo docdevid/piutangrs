@@ -81,6 +81,7 @@
                                     <select name="month" class="form-control">
                                         @php
                                         $bulan = array(
+                                        '-' => "-",
                                         '01' => "Januari",
                                         '02' => "Februari",
                                         '03' => "Maret",
@@ -98,8 +99,7 @@
 
                                         @foreach($bulan as $i => $b)
                                         <option value="{{$i}}"
-                                            @selected(old('month',(request('month')
-                                            ?? now()->format('m')),now()->format('m'))
+                                            @selected(old('month',(request('month')))
                                             ==
                                             $i)>{{$b}}</option>
                                         @endforeach
@@ -230,7 +230,7 @@
                                                 href="{{route('piutang.show',$piutang->id)}}">
                                                 Detail
                                             </a>
-                                            <a class="dropdown-item d-none"
+                                            <a class="dropdown-item"
                                                 href="{{route('piutang.edit',$piutang->id)}}">
                                                 Edit
                                             </a>

@@ -18,7 +18,7 @@ $bulan = array(
 @for($i = 1; $i <=count($bulan);$i++)
 @php
 $data[$i] = $piutangs->filter(function($v,$index)use($i){
-return $v->created_at->month == $i;
+return $v->tgl_keluar->month == $i;
 })
 @endphp
 @endfor
@@ -44,7 +44,7 @@ $data_ = $data[$i]
     <tr>
         <th colspan="16"
             style="text-align: center;font-weight: bold;font-size: 16px;">KEADAAN
-            PER {{$bulan[$i]}} {{$year}}</th>
+            PER {{$bulan[(int)$month] ?? $bulan[$i]}} {{$year}}</th>
     </tr>
 </table>
 <table>

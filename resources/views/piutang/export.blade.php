@@ -17,6 +17,34 @@
                         max="2023"
                         value="2023" />
                 </div>
+                <div class="col-12 col-md-3">
+                    <div class="form-label">Pilih Bulan</div>
+                    <select name="month" form="export" class="form-control">
+                        @php
+                        $bulan = array(
+                        '01' => "Januari",
+                        '02' => "Februari",
+                        '03' => "Maret",
+                        '04' => "April",
+                        '05' => "Mei",
+                        '06' => "Juni",
+                        '07' => "Juli",
+                        '08' => "Agustus",
+                        '09' => "September",
+                        '10' => "Oktober",
+                        '11' => "November",
+                        '12' => "Desember"
+                        );
+                        @endphp
+                        @foreach($bulan as $i => $b)
+                        <option value="{{$i}}"
+                            @selected(old('month',(request('month')
+                            ?? now()->format('m')),now()->format('m'))
+                            ==
+                            $i)>{{$b}}</option>
+                        @endforeach
+                    </select>
+                </div>
             </div>
         </div>
         <div class="mb-2">
