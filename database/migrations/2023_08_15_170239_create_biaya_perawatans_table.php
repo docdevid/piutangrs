@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('jenis_perawatan_id');
             $table->foreign('piutang_id')->references('id')->on('piutang');
             $table->foreign('jenis_perawatan_id')->references('id')->on('jenis_perawatan');
-            $table->integer('biaya');
+            $table->bigInteger('biaya');
             $table->timestamps();
         });
     }

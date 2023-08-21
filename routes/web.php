@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BiayaPerawatanController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ImportController;
 use App\Http\Controllers\JenisPerawatanController;
 use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PenggunaController;
@@ -24,6 +25,10 @@ Route::get('/', function () {
     // return view('welcome');
     return redirect('login');
 });
+Route::get('/import', [ImportController::class, 'index'])->name('import');
+Route::get('/import-pasien', [ImportController::class, 'pasien'])->name('import-pasien');
+Route::get('/import-piutang', [ImportController::class, 'piutang'])->name('import-piutang');
+Route::get('/import-biaya', [ImportController::class, 'biaya'])->name('import-biaya');
 
 Route::get('/dashboard', [DashboardController::class, '__invoke'])->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -31,6 +36,7 @@ Route::middleware('auth')->group(function () {
     /**
      * piutang
      */
+    Route::get('/piutang/import', [PiutangController::class, 'import'])->name('piutang.import');
     Route::get('/piutang/export', [PiutangController::class, 'showExport'])->name('piutang.export');
     Route::get('/piutang/export/excel', [PiutangController::class, 'export'])->name('piutang.excel');
     Route::get('/piutang/pasien', [PiutangController::class, 'getPasien'])->name('piutang.pasien');
@@ -38,6 +44,10 @@ Route::middleware('auth')->group(function () {
 
 
     Route::resource('/jenis-perawatan', JenisPerawatanController::class);
+    /**
+     * Pasien
+     */
+    Route::get('/pasien/import', [PasienController::class, 'import'])->name('pasien.import');
     Route::resource('/pasien', PasienController::class);
     Route::resource('/pengguna', PenggunaController::class);
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

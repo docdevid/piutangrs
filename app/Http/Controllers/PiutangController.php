@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\PiutangExport;
+use App\Imports\PiutangImport;
 use App\Models\BiayaPerawatan;
 use App\Models\JenisPerawatan;
 use App\Models\Pasien;
@@ -52,7 +53,8 @@ class PiutangController extends Controller
         $title = $this->title;
         $jenisPerawatan = new JenisPerawatan();
         $jenisPerawatans = JenisPerawatan::orderBy('id', 'ASC')->get();
-        return view('piutang.create', compact('title', 'jenisPerawatan', 'jenisPerawatans'));
+        $piutang = new Piutang();
+        return view('piutang.create', compact('title', 'jenisPerawatan', 'jenisPerawatans', 'piutang'));
     }
 
     /**
@@ -184,5 +186,12 @@ class PiutangController extends Controller
         //     ->paginate(25);
         // $jenisPerawatans = JenisPerawatan::orderBy('id', 'ASC')->get();
         // return view('exports.piutang', compact('piutangs', 'year', 'jenisPerawatans'));
+    }
+
+    public function import()
+    {
+        $file = public_path('file/pasien.xlsx');
+        Excel::import(new PiutangImport, $file);
+        return back()->with('status', 'import-success');
     }
 }

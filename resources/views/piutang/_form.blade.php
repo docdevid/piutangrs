@@ -6,9 +6,9 @@
         <select id="selectPasien" name="pasien_id"
             placeholder="Masukan nama pasien atau No Rekam Medis...">
             <option value="{{$piutang->pasien_id}}"
-                data-no_rm="{{$piutang->pasien->no_rm}}"
+                data-no_rm="{{$piutang->pasien ? $piutang->pasien->no_rm : ''}}"
                 selected>
-                {{$piutang->pasien->nama}}
+                {{$piutang->pasien ? $piutang->pasien->nama : ''}}
             </option>
         </select>
 
@@ -22,7 +22,7 @@
                 <label for class="form-label col-12 col-md-4 fw-bold">Tgl Masuk</label>
                 <input type="date" name="tgl_masuk"
                     class="form-control"
-                    value="{{old('tgl_masuk',$piutang->tgl_masuk->format('Y-m-d'))}}"
+                    value="{{old('tgl_masuk',$piutang->tgl_masuk ? $piutang->tgl_masuk->format('Y-m-d') : '')}}"
                     placeholder="Masukan tgl masuk" />
                 @error('tgl_masuk')
                 <span class="text-danger fst-italic">{{$message}}</span>
@@ -33,7 +33,7 @@
                 <label for class="form-label col-12 col-md-4 fw-bold">Tgl Keluar</label>
                 <input type="date" name="tgl_keluar"
                     class="form-control"
-                    value="{{old('tgl_keluar',$piutang->tgl_keluar->format('Y-m-d'))}}"
+                    value="{{old('tgl_keluar',$piutang->tgl_keluar ? $piutang->tgl_keluar->format('Y-m-d') : '')}}"
                     placeholder="Masukan tgl keluar" />
                 @error('tgl_keluar')
                 <span class="text-danger fst-italic">{{$message}}</span>

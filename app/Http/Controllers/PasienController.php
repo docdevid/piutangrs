@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\PasienImport;
 use App\Models\Pasien;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 use Spatie\Permission\Models\Role;
 
 class PasienController extends Controller
@@ -106,5 +108,12 @@ class PasienController extends Controller
     {
         $pasien->delete();
         return back()->with('status', 'delete-success');
+    }
+
+    public function import()
+    {
+        $file = public_path('file/pasien.xlsx');
+        Excel::import(new PasienImport, $file);
+        return back()->with('status', 'import-success');
     }
 }
