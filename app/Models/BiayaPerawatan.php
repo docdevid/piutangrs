@@ -13,6 +13,11 @@ class BiayaPerawatan extends Model
 
     protected $fillable = ['piutang_id', 'jenis_perawatan_id', 'biaya'];
 
+    public function piutang()
+    {
+        return $this->belongsTo(Piutang::class);
+    }
+
     public function biayaInRupiah()
     {
         return number_format($this->biaya, 2, '.', ',');

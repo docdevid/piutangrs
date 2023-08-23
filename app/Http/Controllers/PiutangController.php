@@ -29,18 +29,14 @@ class PiutangController extends Controller
                 $q2->orWhere('no_rm', 'like', '%' . $request->search . '%');
             });
         })
-            ->when($request->has('month') || $request->has('year'), function ($q) use ($request) {
-                if ($request->month != '-') {
-                    $month = ($request->month ?? now()->month);
-                    $month = Carbon::createFromFormat('m', $month);
-                    $q->whereMonth('tgl_keluar', $month->month);
-                }
-                $year =  ($request->year ?? now()->year);
-                $date = Carbon::createFromFormat('Y', $year);
-                $q->whereYear('tgl_keluar', $date->year);
+            ->when($request->has('date') && $request->date != '', function ($query) use ($request) {
+                $date = explode(' - ', $request->date);
+                $startDate = Carbon::createFromFormat('Y-m-d', $date[0]);
+                $endDate = Carbon::createFromFormat('Y-m-d', $date[1]);
+                $query->whereBetween('tgl_keluar', [$startDate, $endDate]);
             })
             ->orderBy('id', 'desc')
-            ->paginate(25);
+            ->paginate(50);
         $jenisPerawatans = JenisPerawatan::orderBy('id', 'ASC')->get();
         return view('piutang.index', compact('piutangs', 'jenisPerawatans', 'title'));
     }
@@ -72,9 +68,13 @@ class PiutangController extends Controller
 
         // save jenis perawatan dan biaya
 
+        $total = array_sum($request->jenis_perawatan);
+        $cicilan = $request->cicilan;
+        $sisa = $total - $cicilan;
 
-        $request->request->add(['sisa' => 0]);
-        $request->request->add(['total' => 0]);
+        $request->request->add(['sisa' => $sisa]);
+        $request->request->add(['total' => $total]);
+
         $piutang = $piutang->create($request->all());
 
         $piutang_id = $piutang->id;
@@ -177,15 +177,6 @@ class PiutangController extends Controller
     {
         $year = $request->query('year');
         return Excel::download(new PiutangExport, 'data-piutang-' . $year . '.xls');
-
-        // $piutangs = Piutang::when($request->has('year'), function ($q) use ($request) {
-        //     $date = Carbon::createFromFormat('Y', $request->year);
-        //     $q->whereYear('created_at', $date->year);
-        // })
-        //     ->orderBy('id', 'desc')
-        //     ->paginate(25);
-        // $jenisPerawatans = JenisPerawatan::orderBy('id', 'ASC')->get();
-        // return view('exports.piutang', compact('piutangs', 'year', 'jenisPerawatans'));
     }
 
     public function import()

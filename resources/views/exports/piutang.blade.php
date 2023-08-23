@@ -1,39 +1,39 @@
+
 @php
 $bulan = array(
-1 => "Januari",
-2 => "Februari",
-3 => "Maret",
-4 => "April",
-5 => "Mei",
-6 => "Juni",
-7 => "Juli",
-8 => "Agustus",
-9 => "September",
-10 => "Oktober",
-11 => "November",
-12 => "Desember"
+'01' => "Januari",
+'02' => "Februari",
+'03' => "Maret",
+'04' => "April",
+'05' => "Mei",
+'06' => "Juni",
+'07' => "Juli",
+'08' => "Agustus",
+'09' => "September",
+'10' => "Oktober",
+'11' => "November",
+'12' => "Desember"
 );
 @endphp
 
-@for($i = 1; $i <=count($bulan);$i++)
+@foreach($piutangs as $y => $ps)
+@foreach($bulan as $kb => $b)
 @php
-$data[$i] = $piutangs->filter(function($v,$index)use($i){
-return $v->tgl_keluar->month == $i;
+$data[$kb] = $ps->filter(function($v,$index)use($kb){
+return $v->tgl_keluar->month == $kb;
 })
 @endphp
-@endfor
-
-@for($i = 1; $i <=count($bulan);$i++)
-
-@if(count($data[$i]) > 0)
+@endforeach
+@foreach($bulan as $kb => $b)
 @php
-$data_ = $data[$i]
+$data_ = $data[$kb]
 @endphp
+@if(count($data_) > 0)
 <table>
     <tr>
         <th colspan="16"
             style="text-align: center;font-weight: bold;font-size: 16px;">Daftar
-            Piutang Pasien Tahun {{$year}}</th>
+            Piutang Pasien Tahun {{$y}}</th>
     </tr>
     <tr>
         <th colspan="16"
@@ -44,7 +44,7 @@ $data_ = $data[$i]
     <tr>
         <th colspan="16"
             style="text-align: center;font-weight: bold;font-size: 16px;">KEADAAN
-            PER {{$bulan[(int)$month] ?? $bulan[$i]}} {{$year}}</th>
+            PER {{$b}} {{$y}}</th>
     </tr>
 </table>
 <table>
@@ -147,7 +147,6 @@ $data_ = $data[$i]
 
                 @if ($biaya)
                 {{ number_format($biaya, 0, '.', ',') }}
-                @php $total_biaya_perawatan[$jenis->id][] = $biaya @endphp
                 @endif
                 @endif
             </td>
@@ -266,4 +265,6 @@ $data_ = $data[$i]
     </tr>
 </table>
 @endif
-@endfor
+@endforeach
+
+@endforeach

@@ -73,73 +73,89 @@
                                 <span class="d-none d-md-inline">Import</span>
                             </a>
                         </div>
-                        <div class="text-secondary ms-2">
-                            <a href="{{route('piutang.export')}}"
-                                class="btn btn-primary">
-                                <svg xmlns="http://www.w3.org/2000/svg"
-                                    class="icon icon-tabler icon-tabler-database-export"
-                                    width="24" height="24" viewBox="0 0 24 24"
-                                    stroke-width="2" stroke="currentColor"
-                                    fill="none" stroke-linecap="round"
-                                    stroke-linejoin="round">
-                                    <path stroke="none" d="M0 0h24v24H0z"
-                                        fill="none"></path>
-                                    <path
-                                        d="M4 6c0 1.657 3.582 3 8 3s8 -1.343 8 -3s-3.582 -3 -8 -3s-8 1.343 -8 3"></path>
-                                    <path
-                                        d="M4 6v6c0 1.657 3.582 3 8 3c1.118 0 2.183 -.086 3.15 -.241"></path>
-                                    <path d="M20 12v-6"></path>
-                                    <path
-                                        d="M4 12v6c0 1.657 3.582 3 8 3c.157 0 .312 -.002 .466 -.005"></path>
-                                    <path d="M16 19h6"></path>
-                                    <path d="M19 16l3 3l-3 3"></path>
-                                </svg>
-                                <span class="d-none d-md-inline">Export</span>
-                            </a>
-                        </div>
+
                         <div class="ms-auto text-secondary">
-                            <form method="GET"
-                                action="{{route('piutang.index')}}">
-                                <div class="d-flex gap-2">
-                                    <select name="month" class="form-control">
-                                        @php
-                                        $bulan = array(
-                                        '-' => "-",
-                                        '01' => "Januari",
-                                        '02' => "Februari",
-                                        '03' => "Maret",
-                                        '04' => "April",
-                                        '05' => "Mei",
-                                        '06' => "Juni",
-                                        '07' => "Juli",
-                                        '08' => "Agustus",
-                                        '09' => "September",
-                                        '10' => "Oktober",
-                                        '11' => "November",
-                                        '12' => "Desember"
-                                        );
-                                        @endphp
 
-                                        @foreach($bulan as $i => $b)
-                                        <option value="{{$i}}"
-                                            @selected(old('month',(request('month')))
-                                            ==
-                                            $i)>{{$b}}</option>
-                                        @endforeach
-                                    </select>
-
-                                    <input type="number" name="year" id
-                                        class="form-control"
-                                        value="{{request('year',now()->year)}}">
-
-                                    <input type="text"
-                                        class="form-control me-1"
-                                        name="search"
-                                        value="{{request('search')}}"
-                                        aria-label="Cari data piutang">
-                                    <button class="btn btn-primary">Cari</button>
+                            <div class="d-flex gap-2">
+                                <form method="GET" id="search"
+                                    action="{{route('piutang.index')}}"></form>
+                                <div class="col-5 input-icon">
+                                    <input class="form-control"
+                                        name="date"
+                                        form="search"
+                                        placeholder="Pilih tanggal"
+                                        value="{{request('date')}}"
+                                        id="datepicker-icon">
+                                    <span class="input-icon-addon"><!-- Download SVG icon from http://tabler-icons.io/i/calendar -->
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            class="icon" width="24"
+                                            height="24" viewBox="0 0 24 24"
+                                            stroke-width="2"
+                                            stroke="currentColor"
+                                            fill="none"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"><path
+                                                stroke="none"
+                                                d="M0 0h24v24H0z"
+                                                fill="none"></path><path
+                                                d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"></path><path
+                                                d="M16 3v4"></path><path
+                                                d="M8 3v4"></path><path
+                                                d="M4 11h16"></path><path
+                                                d="M11 15h1"></path><path
+                                                d="M12 15v3"></path></svg>
+                                    </span>
                                 </div>
-                            </form>
+
+                                <input type="text"
+                                    form="search"
+                                    class="form-control me-1"
+                                    name="search"
+                                    value="{{request('search')}}"
+                                    aria-label="Cari data piutang">
+
+                                <button form="search" class="btn btn-primary">Cari</button>
+
+                                <form id="export" method="GET"
+                                    action="{{route('piutang.excel')}}">
+                                </form>
+
+                                <input type="hidden"
+                                    value="{{request('date')}}"
+                                    form="export"
+                                    name="date" />
+                                <button type="submit"
+                                    form="export"
+                                    href="{{route('piutang.export')}}"
+                                    class="btn btn-primary">
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        class="icon icon-tabler icon-tabler-database-export"
+                                        width="24" height="24"
+                                        viewBox="0 0 24 24"
+                                        stroke-width="2"
+                                        stroke="currentColor"
+                                        fill="none"
+                                        stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path stroke="none"
+                                            d="M0 0h24v24H0z"
+                                            fill="none"></path>
+                                        <path
+                                            d="M4 6c0 1.657 3.582 3 8 3s8 -1.343 8 -3s-3.582 -3 -8 -3s-8 1.343 -8 3"></path>
+                                        <path
+                                            d="M4 6v6c0 1.657 3.582 3 8 3c1.118 0 2.183 -.086 3.15 -.241"></path>
+                                        <path d="M20 12v-6"></path>
+                                        <path
+                                            d="M4 12v6c0 1.657 3.582 3 8 3c.157 0 .312 -.002 .466 -.005"></path>
+                                        <path d="M16 19h6"></path>
+                                        <path d="M19 16l3 3l-3 3"></path>
+                                    </svg>
+                                    <span class="d-none d-md-inline">Export</span>
+                                </a>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -292,5 +308,32 @@
                 form.nextElementSibling.submit()
             }
         }
+    </script>
+    <script type="module">
+     document.addEventListener("DOMContentLoaded", function () {
+    	window.Litepicker && (new Litepicker({
+            element: document.getElementById('datepicker-icon'),
+            singleMode: false,
+            numberOfMonths:2,
+            numberOfColumns:2,
+            resetButton: () => {
+   let btn = document.createElement('button');
+   btn.innerHTML = '<span class="btn">Reset</span>';
+   btn.addEventListener('click', (evt) => {
+     evt.preventDefault();
+
+     // some custom action
+   });
+
+   return btn;
+},
+    		buttonText: {
+    			previousMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-left -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M15 6l-6 6l6 6" /></svg>`,
+    			nextMonth: `<!-- Download SVG icon from http://tabler-icons.io/i/chevron-right -->
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 6l6 6l-6 6" /></svg>`,
+    		},
+    	}));
+    });
     </script>
 </x-app-layout>

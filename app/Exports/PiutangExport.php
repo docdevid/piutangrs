@@ -17,25 +17,28 @@ class PiutangExport implements FromView
     public function view(): View
     {
         $request = request()->all();
-        $year = $request['year'];
-        $month = $request['month'];
+        $date = $request['date'];
 
-        $piutangs = Piutang::has('pasien')->when($year, function ($q) use ($month, $year) {
-            $year = Carbon::createFromFormat('Y', $year);
-            if ($month) {
-                $month = Carbon::createFromFormat('m', $month) ?? null;
-                $q->whereMonth('tgl_keluar', $month);
-            }
-            $q->whereYear('tgl_keluar', $year);
-        })
-            ->orderBy('id', 'desc')
-            ->paginate(25);
+        $piutangs = Piutang::has('pasien')
+            ->when($date, function ($query) use ($date) {
+                $date = explode(' - ', $date);
+                $startDate = Carbon::createFromFormat('Y-m-d', $date[0]);
+                $endDate = Carbon::createFromFormat('Y-m-d', $date[1]);
+                $query->whereBetween('tgl_keluar', [$startDate, $endDate]);
+            }, function ($q) {
+                $q->whereMonth('tgl_keluar', now()->month);
+                $q->whereYear('tgl_keluar', now()->year);
+            })
+            ->orderBy('id', 'desc')->get();
 
+        $piutangs = $piutangs->groupBy(function ($item, $key) {
+            return $item->tgl_keluar->format('Y');
+        });
         $jenisPerawatans = JenisPerawatan::orderBy('id', 'ASC')->get();
 
         if ($piutangs->isEmpty()) {
-            return view('exports.piutang-empty', compact('piutangs', 'jenisPerawatans', 'month', 'year'));
+            return view('exports.piutang-empty', compact('piutangs', 'jenisPerawatans'));
         }
-        return view('exports.piutang', compact('piutangs', 'jenisPerawatans', 'month', 'year'));
+        return view('exports.piutang', compact('piutangs', 'jenisPerawatans'));
     }
 }
