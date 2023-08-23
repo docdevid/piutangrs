@@ -29,11 +29,8 @@ class PiutangExport implements FromView
                 $q->whereMonth('tgl_keluar', now()->month);
                 $q->whereYear('tgl_keluar', now()->year);
             })
-            ->orderBy('id', 'desc')->get();
+            ->orderBy('tgl_keluar', 'ASC')->get();
 
-        $piutangs = $piutangs->groupBy(function ($item, $key) {
-            return $item->tgl_keluar->format('Y');
-        });
         $jenisPerawatans = JenisPerawatan::orderBy('id', 'ASC')->get();
 
         if ($piutangs->isEmpty()) {

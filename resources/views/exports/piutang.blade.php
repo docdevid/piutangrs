@@ -16,24 +16,22 @@ $bulan = array(
 );
 @endphp
 
-@foreach($piutangs as $y => $ps)
-@foreach($bulan as $kb => $b)
 @php
-$data[$kb] = $ps->filter(function($v,$index)use($kb){
-return $v->tgl_keluar->month == $kb;
-})
+$no = 0;
+$total_biaya_perawatan = [];
+$total_total = 0;
+$total_cicilan = 0;
+$total_sisa = 0;
 @endphp
-@endforeach
-@foreach($bulan as $kb => $b)
+
 @php
-$data_ = $data[$kb]
+$lastData = $piutangs->last()->tgl_keluar
 @endphp
-@if(count($data_) > 0)
 <table>
     <tr>
         <th colspan="16"
             style="text-align: center;font-weight: bold;font-size: 16px;">Daftar
-            Piutang Pasien Tahun {{$y}}</th>
+            Piutang Pasien Tahun {{$lastData->year}}</th>
     </tr>
     <tr>
         <th colspan="16"
@@ -44,7 +42,7 @@ $data_ = $data[$kb]
     <tr>
         <th colspan="16"
             style="text-align: center;font-weight: bold;font-size: 16px;">KEADAAN
-            PER {{$b}} {{$y}}</th>
+            PER {{$lastData->monthName}}</th>
     </tr>
 </table>
 <table>
@@ -100,14 +98,13 @@ $data_ = $data[$kb]
             @endforeach
         </tr>
     </thead>
+    @php
+    $data_ = $piutangs
+    @endphp
+    @if(count($data_) > 0)
+
     <tbody>
-        @php
-        $no = 0;
-        $total_biaya_perawatan = [];
-        $total_total = 0;
-        $total_cicilan = 0;
-        $total_sisa = 0;
-        @endphp
+
         @foreach ($data_ as $piutang)
         <tr>
             <td
@@ -189,6 +186,9 @@ $data_ = $data[$kb]
         </tr>
         @endforeach
     </tbody>
+
+    @endif
+
     <tfoot>
         <tr>
             <th
@@ -222,6 +222,7 @@ $data_ = $data[$kb]
         </tr>
     </tfoot>
 </table>
+
 <table>
     <tr>
         @for($i=1; $i <= 11;$i++)
@@ -264,7 +265,3 @@ $data_ = $data[$kb]
         </td>
     </tr>
 </table>
-@endif
-@endforeach
-
-@endforeach

@@ -176,7 +176,26 @@ class PiutangController extends Controller
     public function export(Request $request)
     {
         $year = $request->query('year');
-        return Excel::download(new PiutangExport, 'data-piutang-' . $year . '.xls');
+        // return Excel::download(new PiutangExport, 'data-piutang-' . $year . '.xls');
+
+        $request = request()->all();
+        $date = $request['date'];
+
+        $piutangs = Piutang::has('pasien')
+            ->when($date, function ($query) use ($date) {
+                $date = explode(' - ', $date);
+                $startDate = Carbon::createFromFormat('Y-m-d', $date[0]);
+                $endDate = Carbon::createFromFormat('Y-m-d', $date[1]);
+                $query->whereBetween('tgl_keluar', [$startDate, $endDate]);
+            }, function ($q) {
+                $q->whereMonth('tgl_keluar', now()->month);
+                $q->whereYear('tgl_keluar', now()->year);
+            })
+            ->orderBy('tgl_keluar', 'ASC')->get();
+
+        $jenisPerawatans = JenisPerawatan::orderBy('id', 'ASC')->get();
+
+        return view('exports.piutang', compact('piutangs', 'jenisPerawatans'));
     }
 
     public function import()
