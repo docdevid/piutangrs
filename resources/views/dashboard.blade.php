@@ -145,11 +145,11 @@
                             <div style="height:100%"
                                 class="d-flex flex-column align-items-center justify-content-center">
                                 <h2 class="text-primary fw-bold text-center">Total
-                                    Biaya
+                                    Sisa Biaya
                                     Perawatan</h2>
                                 <span class="display-6 fw-bolder text-primary">
                                     Rp
-                                    {{number_format(\App\Models\Piutang::pluck('total')->sum(),2,'.',',')}}
+                                    {{number_format(\App\Models\Piutang::pluck('sisa')->sum(),2,'.',',')}}
                                 </span>
                             </div>
                         </div>
