@@ -59,6 +59,10 @@ $lastData = $piutangs->last()->tgl_keluar
                 rowspan="2">No Rekam Medis
             </th>
             <th
+                style="width:100px;text-align:left;font-weight:bold;border:1px solid black;border-collapse: collapse;"
+                rowspan="2">Alamat
+            </th>
+            <th
                 style="width:75px;text-align:center;font-weight:bold;border:1px solid black;border-collapse: collapse;"
                 colspan="2">Tanggal</th>
             <th
@@ -116,6 +120,10 @@ $lastData = $piutangs->last()->tgl_keluar
             <td
                 style="text-align:left;border:1px solid black;border-collapse: collapse;"><span>{{
                     $piutang->pasien->no_rm }}</span>
+            </td>
+            <td
+                style="text-align:left;border:1px solid black;border-collapse: collapse;"><span>{{
+                    $piutang->pasien->alamat }}</span>
             </td>
             <td
                 style="text-align:center;border:1px solid black;border-collapse: collapse;">{{
@@ -193,7 +201,7 @@ $lastData = $piutangs->last()->tgl_keluar
         <tr>
             <th
                 style="text-align:center;font-weight:bold;border:1px solid black;border-collapse: collapse;"
-                colspan="6">Jumlah</th>
+                colspan="7">Jumlah</th>
             @foreach ($jenisPerawatans as $jenis)
             <th
                 style="text-align:center;font-weight:bold;border:1px solid black;border-collapse: collapse;">
