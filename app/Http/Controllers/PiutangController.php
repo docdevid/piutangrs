@@ -123,8 +123,13 @@ class PiutangController extends Controller
             'cicilan' => 'required',
         ]);
 
-        $request->request->add(['sisa' => 0]);
-        $request->request->add(['total' => 0]);
+        $total = array_sum($request->jenis_perawatan);
+        $cicilan = $request->cicilan;
+        $sisa = $total - $cicilan;
+
+        $request->request->add(['sisa' => $sisa]);
+        $request->request->add(['total' => $total]);
+
         $piutang->update($request->all());
 
 

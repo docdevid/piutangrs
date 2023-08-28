@@ -74,7 +74,7 @@
                                 </div>
                                 <div class="col">
                                     <div class="font-weight-medium">
-                                        {{\App\Models\User::count()}}
+                                        {{\App\Models\Pasien::count()}}
                                     </div>
                                     <div class="text-secondary">
                                         Pasien
@@ -149,7 +149,7 @@
                                     Perawatan</h2>
                                 <span class="display-6 fw-bolder text-primary">
                                     Rp
-                                    {{number_format(\App\Models\Piutang::pluck('sisa')->sum(),2,'.',',')}}
+                                    {{number_format(\App\Models\Piutang::pluck('sisa')->sum())}}
                                 </span>
                             </div>
                         </div>

@@ -8,6 +8,7 @@ use App\Http\Controllers\PasienController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\PiutangController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\SetingsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,6 +51,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/pasien/import', [PasienController::class, 'import'])->name('pasien.import');
     Route::resource('/pasien', PasienController::class);
     Route::resource('/pengguna', PenggunaController::class);
+
+    Route::put('/setings-export', [SetingsController::class, 'update'])->name('seting-export.update');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::patch('/profile-picture', [ProfileController::class, 'updateProfilePicture'])->name('profile-picture.update');

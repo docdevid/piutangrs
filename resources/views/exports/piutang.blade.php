@@ -1,5 +1,6 @@
 
 @php
+$export_setings = \App\Models\Setings::first();
 $bulan = array(
 '01' => "Januari",
 '02' => "Februari",
@@ -261,7 +262,7 @@ $lastData = $piutangs->last()->tgl_keluar
         @endfor
         <td colspan="3"
             style="text-align: center;border-bottom: 1px solid black;border-collapse: collapse;">
-            <p>Dra. Widiaastuti</p>
+            <p>{{$export_setings->tanda_tangan}}</p>
         </td>
     </tr>
     <tr>
@@ -269,7 +270,7 @@ $lastData = $piutangs->last()->tgl_keluar
         <td></td>
         @endfor
         <td colspan="3" style="text-align: center;">
-            <p>NIP. 196611202 2 002</p>
+            <p>NIP. {{$export_setings->nip}}</p>
         </td>
     </tr>
 </table>

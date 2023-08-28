@@ -207,9 +207,9 @@
                                 <td class="text-secondary py-3"><span
                                         class="p-1 bg-success-lt">{{$piutang->pasien->no_rm}}</span></td>
                                 <td
-                                    class="text-secondary py-3 text-center small">{{$piutang->tgl_masuk->format('d/m/y')}}</td>
+                                    class="text-secondary py-3 text-center small">{{$piutang->tgl_masuk->format('d/m/Y')}}</td>
                                 <td
-                                    class="text-secondary py-3 text-center small">{{$piutang->tgl_keluar->format('d/m/y')}}</td>
+                                    class="text-secondary py-3 text-center small">{{$piutang->tgl_keluar->format('d/m/Y')}}</td>
                                 <td class="text-secondary py-3 text-center">{{$piutang->zaal}}</td>
                                 @foreach($jenisPerawatans as $jenis)
                                 <td class="text-secondary text-start">
@@ -218,8 +218,19 @@
                                         0)
                                         @php
                                         $biaya =
-                                        $piutang->biaya_perawatan->where('jenis_perawatan_id','=',$jenis->id)->first()->toArray()['biaya']
+                                        $piutang->biaya_perawatan->where('jenis_perawatan_id','=',$jenis->id)
                                         @endphp
+
+                                        @if($biaya->first())
+                                        @php
+                                        $biaya = $biaya->first()->toArray()['biaya']
+                                        @endphp
+                                        @else
+                                        @php
+                                        $biaya = 0
+                                        @endphp
+                                        @endif
+
                                         {{'Rp '.number_format($biaya,2,'.',',')}}
                                         @else
                                         Rp 0.00

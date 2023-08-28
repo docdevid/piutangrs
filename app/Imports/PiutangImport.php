@@ -4,6 +4,7 @@ namespace App\Imports;
 
 use App\Models\Piutang;
 use Carbon\Carbon;
+use Exception;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use PhpOffice\PhpSpreadsheet\Shared\Date;
@@ -18,10 +19,13 @@ class PiutangImport implements ToModel, WithHeadingRow
      */
     public function model(array $row)
     {
+        $tgl_masuk = Carbon::parse($row['tgl_masuk']);
+        $tgl_keluar = Carbon::parse($row['tgl_keluar']);
+
         return new Piutang([
             'pasien_id' => $row['no'],
-            'tgl_masuk' => $row['tgl_masuk'] ? Date::excelToDateTimeObject($row['tgl_masuk']) : now(),
-            'tgl_keluar' => $row['tgl_keluar'] ? Date::excelToDateTimeObject($row['tgl_keluar']) : now(),
+            'tgl_masuk' => $row['tgl_masuk'] ? $tgl_masuk : now(),
+            'tgl_keluar' => $row['tgl_keluar'] ? $tgl_keluar : now(),
             'zaal' => $row['zaal'] ?? 'A',
             'total' => $row['total'] ?? 0,
             'cicilan' => $row['cicilan'] ?? 0,
